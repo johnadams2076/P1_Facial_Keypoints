@@ -1,0 +1,11 @@
+ARG FROM_IMAGE_NAME=nvcr.io/nvidia/pytorch:20.12-py3
+FROM ${FROM_IMAGE_NAME}
+
+ADD requirements.txt /workspace/
+WORKDIR /workspace
+RUN pip install --no-cache-dir -r requirements.txt
+ADD . /workspace
+WORKDIR /workspace
+RUN apt-get update && apt-get install -y libgl1-mesa-glx
+
+ENTRYPOINT ["/bin/bash","-c", "jupyter notebook"]
